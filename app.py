@@ -84,13 +84,13 @@ st.write("Upload a video to analyze its spatial and temporal aura.")
 # Initialize the model and load weights (cached so it doesn't reload on every button click)
 @st.cache_resource
 def load_model():
-    weights_path = 'deepshield_weights.pth'
+    # Changed the filename so Streamlit ignores the old corrupted file
+    weights_path = 'deepshield_weights_v2.pth' 
     
-    # If the weights file isn't found, download it from GitHub Releases!
     if not os.path.exists(weights_path):
         with st.spinner("Downloading model weights (this takes a minute)..."):
-            # ---> sha256:251a7acd52fc10ccab1da5388fe8d014f0bfbd730adcfb19c02f79c0c724f88f <---
-            url = "https://github.com/AyushB04/DeepShield/releases/tag/v1.0" 
+            # This is the exact raw download link 
+            url = "https://github.com/AyushB04/DeepShield/releases/download/v1.0/deepshield_weights.pth" 
             urllib.request.urlretrieve(url, weights_path)
             
     model = DeepShield()
