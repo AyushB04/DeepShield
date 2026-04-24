@@ -4,7 +4,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from torchvision.models import resnext101_32x8d, ResNeXt101_32X8D_Weights
-from mtcnn import MTCNN
+from facenet_pytorch import MTCNN
 import tempfile
 import os
 
