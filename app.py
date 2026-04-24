@@ -90,7 +90,7 @@ def load_model():
     if not os.path.exists(weights_path):
         with st.spinner("Downloading model weights (this takes a minute)..."):
             # ---> sha256:251a7acd52fc10ccab1da5388fe8d014f0bfbd730adcfb19c02f79c0c724f88f <---
-            url = "https://github.com/AyushB04/DeepShield/commit/a08d2db3f88b88dada03ab51ac0bb1b6a6e2b778" 
+            url = "https://github.com/AyushB04/DeepShield/releases/download/v1.0/deepshield_weights.pth" 
             urllib.request.urlretrieve(url, weights_path)
             
     model = DeepShield()
