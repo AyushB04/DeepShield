@@ -1,3 +1,4 @@
+import urllib.request
 import streamlit as st
 import cv2
 import numpy as np
@@ -83,17 +84,25 @@ st.write("Upload a video to analyze its spatial and temporal aura.")
 # Initialize the model and load weights (cached so it doesn't reload on every button click)
 @st.cache_resource
 def load_model():
+    weights_path = 'deepshield_weights.pth'
+    
+    # If the weights file isn't found, download it from GitHub Releases!
+    if not os.path.exists(weights_path):
+        with st.spinner("Downloading model weights (this takes a minute)..."):
+            # ---> sha256:251a7acd52fc10ccab1da5388fe8d014f0bfbd730adcfb19c02f79c0c724f88f <---
+            url = "sha256:251a7acd52fc10ccab1da5388fe8d014f0bfbd730adcfb19c02f79c0c724f88f" 
+            urllib.request.urlretrieve(url, weights_path)
+            
     model = DeepShield()
-    # Check if CPU or GPU is available for inference
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model.to(device)
+    
     try:
-        # map_location ensures it loads correctly even if trained on GPU but running on CPU
-        model.load_state_dict(torch.load('deepshield_weights.pth', map_location=device))
+        model.load_state_dict(torch.load(weights_path, map_location=device))
         model.eval()
         return model, device
-    except FileNotFoundError:
-        st.error("Model weights file ('deepshield_weights.pth') not found! Please ensure it's in the same folder as app.py.")
+    except Exception as e:
+        st.error(f"Error loading model: {e}")
         return None, None
 
 model, device = load_model()
